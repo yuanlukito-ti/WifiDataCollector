@@ -14,7 +14,7 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerLocation"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -23,16 +23,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_scan_title"
-        android:id="@+id/button"
-        android:layout_below="@+id/spinner"
+        android:id="@+id/buttonScan"
+        android:layout_below="@+id/spinnerLocation"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/button"
+        android:id="@+id/listViewWifiStation"
+        android:layout_below="@+id/buttonScan"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -40,18 +40,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_save_title"
-        android:id="@+id/button2"
-        android:layout_alignTop="@+id/button"
-        android:layout_toRightOf="@+id/button"
-        android:layout_toEndOf="@+id/button" />
+        android:id="@+id/buttonSave"
+        android:layout_alignTop="@+id/buttonScan"
+        android:layout_toRightOf="@+id/buttonScan"
+        android:layout_toEndOf="@+id/buttonScan" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_manage_title"
-        android:id="@+id/button3"
-        android:layout_above="@+id/listView"
-        android:layout_alignRight="@+id/listView"
-        android:layout_alignEnd="@+id/listView" />
+        android:id="@+id/buttonManageData"
+        android:layout_above="@+id/listViewWifiStation"
+        android:layout_alignRight="@+id/listViewWifiStation"
+        android:layout_alignEnd="@+id/listViewWifiStation" />
 
 </RelativeLayout>
