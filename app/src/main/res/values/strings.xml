@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="location_drop_down_title">Pilih lokasi anda sekarang:</string>
+    <string name="button_scan_title">Scan</string>
+    <string name="button_save_title">Save</string>
+    <string name="button_manage_title">Manage Data</string>
 </resources>
