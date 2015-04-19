@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import id.ac.ukdw.ti.yuanlukito.wifidatacollector.model.DataSource;
 import id.ac.ukdw.ti.yuanlukito.wifidatacollector.model.WifiStation;
 import id.ac.ukdw.ti.yuanlukito.wifidatacollector.utilities.WifiStationListAdapter;
+import id.ac.ukdw.ti.yuanlukito.wifidatacollector.utilities.WifiStationSortByLevel;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -57,6 +59,14 @@ public class MainActivity extends ActionBarActivity {
         Toast.makeText(this, "Scan results received.", Toast.LENGTH_SHORT).show();
     }
 
+    private void displayToastInsertWifiDataSuccess(){
+        Toast.makeText(this, "Scan results successfully saved.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void displayToastInsertWifiDataFailed(){
+        Toast.makeText(this, "Cannot save scan result. Please try again.", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +94,8 @@ public class MainActivity extends ActionBarActivity {
                     WifiStation ws = new WifiStation(sr.BSSID, sr.SSID, sr.frequency, sr.level);
                     wifiStations.add(ws);
                 }
+                //sort by level
+                Collections.sort(wifiStations, new WifiStationSortByLevel());
 
                 wifiStationsAdapter = new WifiStationListAdapter(getParent(), wifiStations);
                 listViewWifiStations.setAdapter(wifiStationsAdapter);
@@ -108,7 +120,26 @@ public class MainActivity extends ActionBarActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Save to database
+                //check if we already have scan results
+                if(wifiStations != null || wifiStations.size() > 0) {
+                    DataSource ds = new DataSource(getApplicationContext());
+                    try {
+                        ds.open();
+                        //get id of selected location (spinner)
+                        int locationId = ds.getLocationId((String) spinnerLocation.getSelectedItem());
+                        boolean result = ds.insertWifiData(locationId, wifiStations);
+                        if(result) {
+                            displayToastInsertWifiDataSuccess();
+                        }
+                        else {
+                            displayToastInsertWifiDataFailed();
+                        }
+                    } catch (SQLException e) {
+                        displayToastInsertWifiDataFailed();
+                        e.printStackTrace();
+                    }
+
+                }
             }
         });
 

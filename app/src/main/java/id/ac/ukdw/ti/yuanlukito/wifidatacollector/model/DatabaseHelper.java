@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     //database name & version
-    private static final String DATABASE_NAME = "wifidb";
+    private static final String DATABASE_NAME = "wifidbcollector";
     private static final int DATABASE_VERSION = 1;
 
     public static final String LOCATION_TABLENAME = "location";

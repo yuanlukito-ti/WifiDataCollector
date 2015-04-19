@@ -9,7 +9,11 @@ import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+
+import id.ac.ukdw.ti.yuanlukito.wifidatacollector.utilities.WifiStationSortByBssid;
+import id.ac.ukdw.ti.yuanlukito.wifidatacollector.utilities.WifiStationSortBySsid;
 
 /**
  * Created by Yuan Lukito on 3/24/2015.
@@ -124,29 +128,32 @@ public class DataSource {
 
     public boolean insertWifiData(int locationId, ArrayList<WifiStation> wifiStations){
         boolean result = false;
-        ArrayList<WifiStation> allStations = getAllWifiStations();
-        //insert to wifidata
+
+        //insert to wifidata table
         ContentValues values = new ContentValues();
         values.put("id_ruangan", locationId);
         long wifiDataId = db.insert(DatabaseHelper.WIFIDATA_TABLENAME, null, values);
-        String message;
-        if(wifiDataId != -1){
-            //insert to wifidatadetail
 
-            //iterate allStations
-            for(WifiStation ws: allStations) {
+        //if insert to wifidata table success, insert into wifidatadetail
+        if(wifiDataId != -1){
+            //get predefined wifi stations from database, sort by ssid
+            ArrayList<WifiStation> allStationsOnDB = getAllWifiStations();
+            Collections.sort(allStationsOnDB, new WifiStationSortBySsid());
+
+            for(int i=0; i<allStationsOnDB.size(); i++) {
+                WifiStation wsOnDB = allStationsOnDB.get(i);
                 values.clear();
                 values.put("id_wifidata", wifiDataId);
-                values.put("bssid", ws.getBssid());
-                values.put("ssid", ws.getSsid());
-                if(wifiStations.contains(ws)) {
-                    WifiStation w = wifiStations.get(wifiStations.indexOf(ws));
+                values.put("bssid", wsOnDB.getBssid());
+                values.put("ssid", wsOnDB.getSsid());
+                if(wifiStations.contains(wsOnDB)) {
+                    WifiStation w = wifiStations.get(wifiStations.indexOf(wsOnDB));
                     values.put("frequency", w.getFrequency());
                     values.put("level", w.getLevel());
                 }
                 else {
                     values.put("frequency", -1);
-                    values.put("level", -999);
+                    values.put("level", -100);
                 }
                 db.insert(DatabaseHelper.WIFIDATADETAIL_TABLENAME, null, values);
             }
