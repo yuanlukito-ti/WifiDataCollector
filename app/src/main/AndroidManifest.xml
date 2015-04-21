@@ -20,6 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ManageDataActivity"
+            android:label="@string/title_activity_manage_data"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="id.ac.ukdw.ti.yuanlukito.wifidatacollector.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

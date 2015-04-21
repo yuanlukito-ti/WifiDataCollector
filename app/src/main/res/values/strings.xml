@@ -7,4 +7,10 @@
     <string name="button_scan_title">Scan</string>
     <string name="button_save_title">Save</string>
     <string name="button_manage_title">Manage Data</string>
+    <string name="title_activity_manage_data">Manage Data</string>
+    <string name="manage_data_title">Manage Data</string>
+    <string name="manage_data_detail">You can see list of all predefined locations here.  Tap a location to view all the wifi stations data related to it</string>
+    <string name="manage_data_title_export">Export Data</string>
+    <string name="manage_data_export_detail">Tap Export button to export all captured data into a CSV file.</string>
+    <string name="button_export_data">Export</string>
 </resources>
