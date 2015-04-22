@@ -204,4 +204,27 @@ public class DataSource {
         }
         return wifiData;
     }
+
+    public ArrayList<LocationData> getLocationData(DataCollectionTime dct){
+        ArrayList<LocationData> locationDatas = new ArrayList<>();
+        String selectionArgs[] = new String[2];
+        switch (dct){
+            case PAGI:
+                selectionArgs[0] = "";
+                selectionArgs[1] = "";
+                break;
+            case SIANG:
+                selectionArgs[0] = "";
+                selectionArgs[1] = "";
+                break;
+            case SORE:
+                selectionArgs[0] = "";
+                selectionArgs[1] = "";
+                break;
+        }
+        Cursor cursor = db.rawQuery("SELECT id_data, id_ruangan, waktu_pengambilan FROM wifidata WHERE waktu_pengambilan BETWEEN ? AND ?", selectionArgs);
+        cursor.moveToFirst();
+        //TODO: Complete query, build arraylist
+        return locationDatas;
+    }
 }
