@@ -1,5 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Perpustakaan"
+        android:id="@+id/textViewLocationName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pagi: 8"
+        android:id="@+id/textViewPagi"
+        android:layout_below="@+id/textViewLocationName"
+        android:layout_alignLeft="@+id/textViewLocationName"
+        android:layout_alignStart="@+id/textViewLocationName"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBarPagi"
+        android:layout_below="@+id/textViewPagi"
+        android:layout_alignLeft="@+id/textViewPagi"
+        android:layout_alignStart="@+id/textViewPagi"
+        android:progress="80"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siang: 6"
+        android:id="@+id/textViewSiang"
+        android:layout_below="@+id/progressBarPagi"
+        android:layout_alignLeft="@+id/progressBarPagi"
+        android:layout_alignStart="@+id/progressBarPagi"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBarSiang"
+        android:layout_below="@+id/textViewSiang"
+        android:layout_alignLeft="@+id/textViewSiang"
+        android:layout_alignStart="@+id/textViewSiang"
+        android:progress="60"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sore: 4"
+        android:id="@+id/textViewSore"
+        android:layout_below="@+id/progressBarSiang"
+        android:layout_alignLeft="@+id/progressBarSiang"
+        android:layout_alignStart="@+id/progressBarSiang"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBarSore"
+        android:layout_below="@+id/textViewSore"
+        android:layout_alignLeft="@+id/textViewSore"
+        android:layout_alignStart="@+id/textViewSore"
+        android:progress="40" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewProgress"
+        android:src="@drawable/notification_warning"
+        android:layout_above="@+id/textViewPagi"
+        android:layout_alignRight="@+id/textViewLocationName"
+        android:layout_alignEnd="@+id/textViewLocationName" />
 
 </RelativeLayout>
