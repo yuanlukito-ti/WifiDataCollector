@@ -97,7 +97,7 @@ public class MainActivity extends ActionBarActivity {
                 //sort by level
                 Collections.sort(wifiStations, new WifiStationSortByLevel());
 
-                wifiStationsAdapter = new WifiStationListAdapter(getParent(), wifiStations);
+                wifiStationsAdapter = new WifiStationListAdapter(MainActivity.this, wifiStations);
                 listViewWifiStations.setAdapter(wifiStationsAdapter);
             }
         };
