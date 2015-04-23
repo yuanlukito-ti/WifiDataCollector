@@ -123,6 +123,8 @@ public class DataSource {
         cursor.moveToFirst();
         if(cursor.getInt(0) > 0)
             exist = true;
+        if(!cursor.isClosed())
+            cursor.close();
         return exist;
     }
 
@@ -205,26 +207,29 @@ public class DataSource {
         return wifiData;
     }
 
-    public ArrayList<LocationData> getLocationData(DataCollectionTime dct){
-        ArrayList<LocationData> locationDatas = new ArrayList<>();
-        String selectionArgs[] = new String[2];
+    public int getCountOfLocationData(int locationId, DataCollectionTime dct){
+        int count = 0;
+        String selectionArgs[] = new String[3];
+        selectionArgs[2] = locationId + "";
         switch (dct){
             case PAGI:
-                selectionArgs[0] = "";
-                selectionArgs[1] = "";
+                selectionArgs[0] = "07:00";
+                selectionArgs[1] = "10:00";
                 break;
             case SIANG:
-                selectionArgs[0] = "";
-                selectionArgs[1] = "";
+                selectionArgs[0] = "10:01";
+                selectionArgs[1] = "13:00";
                 break;
             case SORE:
-                selectionArgs[0] = "";
-                selectionArgs[1] = "";
+                selectionArgs[0] = "13:00";
+                selectionArgs[1] = "17:00";
                 break;
         }
-        Cursor cursor = db.rawQuery("SELECT id_data, id_ruangan, waktu_pengambilan FROM wifidata WHERE waktu_pengambilan BETWEEN ? AND ?", selectionArgs);
+        Cursor cursor = db.rawQuery("SELECT count(id_data) FROM wifidata WHERE (id_ruangan = ?) AND (strftime('%H:%M', waktu_pengambilan) BETWEEN ? AND ?)", selectionArgs);
         cursor.moveToFirst();
-        //TODO: Complete query, build arraylist
-        return locationDatas;
+        count = cursor.getInt(0);
+        if(!cursor.isClosed())
+            cursor.close();
+        return count;
     }
 }

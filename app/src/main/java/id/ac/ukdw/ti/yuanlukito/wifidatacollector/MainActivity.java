@@ -72,39 +72,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initialize wifi manager and enable wifi
-        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if(!wifiManager.isWifiEnabled())
-            wifiManager.setWifiEnabled(true);
-
-        //receive wifi scan results
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                displayToastReceivedScanResult();
-
-                wifiScanResults = wifiManager.getScanResults();
-                wifiStations = new ArrayList<>();
-
-                if(wifiScanResults.size() > 0)
-                    buttonSave.setEnabled(true);
-
-                for(int i=0; i<wifiScanResults.size(); i++){
-                    ScanResult sr = wifiScanResults.get(i);
-                    WifiStation ws = new WifiStation(sr.BSSID, sr.SSID, sr.frequency, sr.level);
-                    wifiStations.add(ws);
-                }
-                //sort by level
-                Collections.sort(wifiStations, new WifiStationSortByLevel());
-
-                wifiStationsAdapter = new WifiStationListAdapter(MainActivity.this, wifiStations);
-                listViewWifiStations.setAdapter(wifiStationsAdapter);
-            }
-        };
-
-        //register broadcast receiver
-        registerReceiver(broadcastReceiver, intentFilter);
-
         //button handling
         buttonScan = (Button) findViewById(R.id.buttonScan);
         buttonScan.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +114,8 @@ public class MainActivity extends ActionBarActivity {
         buttonManageData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Call ManageDataActivity
+                Intent intent = new Intent(MainActivity.this, ManageDataActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -166,6 +134,48 @@ public class MainActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void onPause(){
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    public void onResume(){
+        super.onResume();
+
+        //initialize wifi manager and enable wifi
+        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if(!wifiManager.isWifiEnabled())
+            wifiManager.setWifiEnabled(true);
+
+        //receive wifi scan results
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                displayToastReceivedScanResult();
+
+                wifiScanResults = wifiManager.getScanResults();
+                wifiStations = new ArrayList<>();
+
+                if(wifiScanResults.size() > 0)
+                    buttonSave.setEnabled(true);
+
+                for(int i=0; i<wifiScanResults.size(); i++){
+                    ScanResult sr = wifiScanResults.get(i);
+                    WifiStation ws = new WifiStation(sr.BSSID, sr.SSID, sr.frequency, sr.level);
+                    wifiStations.add(ws);
+                }
+                //sort by level
+                Collections.sort(wifiStations, new WifiStationSortByLevel());
+
+                wifiStationsAdapter = new WifiStationListAdapter(MainActivity.this, wifiStations);
+                listViewWifiStations.setAdapter(wifiStationsAdapter);
+            }
+        };
+
+        //register broadcast receiver
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
