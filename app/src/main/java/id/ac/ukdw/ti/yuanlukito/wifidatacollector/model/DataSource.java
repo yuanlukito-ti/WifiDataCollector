@@ -138,25 +138,16 @@ public class DataSource {
 
         //if insert to wifidata table success, insert into wifidatadetail
         if(wifiDataId != -1){
-            //get predefined wifi stations from database, sort by ssid
-            ArrayList<WifiStation> allStationsOnDB = getAllWifiStations();
-            Collections.sort(allStationsOnDB, new WifiStationSortBySsid());
+            Collections.sort(wifiStations, new WifiStationSortByBssid());
 
-            for(int i=0; i<allStationsOnDB.size(); i++) {
-                WifiStation wsOnDB = allStationsOnDB.get(i);
+            for(int i=0; i<wifiStations.size(); i++) {
+                WifiStation ws = wifiStations.get(i);
                 values.clear();
                 values.put("id_wifidata", wifiDataId);
-                values.put("bssid", wsOnDB.getBssid());
-                values.put("ssid", wsOnDB.getSsid());
-                if(wifiStations.contains(wsOnDB)) {
-                    WifiStation w = wifiStations.get(wifiStations.indexOf(wsOnDB));
-                    values.put("frequency", w.getFrequency());
-                    values.put("level", w.getLevel());
-                }
-                else {
-                    values.put("frequency", -1);
-                    values.put("level", -100);
-                }
+                values.put("bssid", ws.getBssid());
+                values.put("ssid", ws.getSsid());
+                values.put("frequency", ws.getFrequency());
+                values.put("level", ws.getLevel());
                 db.insert(DatabaseHelper.WIFIDATADETAIL_TABLENAME, null, values);
             }
             result = true;
@@ -213,23 +204,24 @@ public class DataSource {
         selectionArgs[2] = locationId + "";
         switch (dct){
             case PAGI:
-                selectionArgs[0] = "07:00";
-                selectionArgs[1] = "10:00";
+                selectionArgs[0] = "'07:00'";
+                selectionArgs[1] = "'10:00'";
                 break;
             case SIANG:
-                selectionArgs[0] = "10:01";
-                selectionArgs[1] = "13:00";
+                selectionArgs[0] = "'10:01'";
+                selectionArgs[1] = "'13:00'";
                 break;
             case SORE:
-                selectionArgs[0] = "13:00";
-                selectionArgs[1] = "17:00";
+                selectionArgs[0] = "'13:00'";
+                selectionArgs[1] = "'17:00'";
                 break;
         }
-        Cursor cursor = db.rawQuery("SELECT count(id_data) FROM wifidata WHERE (id_ruangan = ?) AND (strftime('%H:%M', waktu_pengambilan) BETWEEN ? AND ?)", selectionArgs);
+        Cursor cursor = db.rawQuery("SELECT count(id_data) FROM wifidata WHERE (id_ruangan = ?) AND (strftime('%H:%M', waktu_pengambilan, 'localtime') BETWEEN ? AND ?)", selectionArgs);
         cursor.moveToFirst();
         count = cursor.getInt(0);
         if(!cursor.isClosed())
             cursor.close();
+        Log.d("DATACOL", "Location id: " + locationId + ", count: " + count);
         return count;
     }
 }
